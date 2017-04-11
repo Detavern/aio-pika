@@ -60,13 +60,13 @@ class Message:
         """
 
         self.__lock = False
-        self.body = body if isinstance(body, bytes) else bytes(body)
+        self.body = body if isinstance(body, bytes) else str(body).encode()
         self.headers = headers
         self.content_type = content_type
         self.content_encoding = content_encoding
         self.delivery_mode = DeliveryMode(int(delivery_mode)).value
         self.priority = priority
-        self.correlation_id = bytes(str(correlation_id), 'utf-8')
+        self.correlation_id = correlation_id if isinstance(correlation_id, bytes) else bytes(str(correlation_id), 'utf-8')
         self.reply_to = reply_to
         self.expiration = self._convert_timestamp(expiration) * 1000 if timestamp else None
         self.message_id = message_id
