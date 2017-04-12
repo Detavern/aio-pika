@@ -60,7 +60,15 @@ class Message:
         """
 
         self.__lock = False
-        self.body = body if isinstance(body, bytes) else str(body).encode()
+        if isinstance(body, bytes):
+            self.body = body
+        elif isinstance(body, str):
+            self.body = body.encode()
+        else:
+            try:
+                self.body = json.dumps(body).encode()
+            except Exception as e:
+                raise
         self.headers = headers
         self.content_type = content_type
         self.content_encoding = content_encoding
